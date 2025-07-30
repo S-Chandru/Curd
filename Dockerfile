@@ -1,12 +1,12 @@
-# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /app
-COPY . ./
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY . .
 RUN dotnet restore
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o /app/publish
 
-# Runtime Stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "MyApp.dll"]
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "Curd.dll"]
